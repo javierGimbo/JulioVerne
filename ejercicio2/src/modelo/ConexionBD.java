@@ -21,7 +21,7 @@ public class ConexionBD {
 
     public ConexionBD(String nombreBD) {
         this.usuario = "root";
-        this.pass = "Root.1234";
+        this.pass = "1234"; //Root.1234
 
         this.drivermysql = "com.mysql.cj.jdbc.Driver";
         this.url = "jdbc:mysql://localhost:3306/" + nombreBD;
@@ -46,5 +46,7 @@ public class ConexionBD {
         }
 
     }
-
+ public Connection getConexion() {
+        return conexion;
+    }
 }

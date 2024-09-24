@@ -8,6 +8,7 @@ import java.util.List;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 
@@ -43,7 +44,7 @@ public class usuarioDAO extends DAO {
     
     public void insertarUsuario(usuario usuario) throws SQLException{
         String sql = "Insert into usuario values(?,?,?)";
-        PreparedStarement statement = conexion.getConexion().prepareStatement(sql)
+        PreparedStatement statement = conexion.getConexion().prepareStatement(sql);
         statement.setInt(1, usuario.getIdUsuario());
         statement.setString(2, usuario.getNombre());
         statement.setString(3, usuario.getContraseña());
