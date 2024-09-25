@@ -8,8 +8,8 @@ import java.util.List;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.sql.PreparedStatement;
 
 
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  *
  * @author javiergimenez
  */
-public class usuarioDAO extends DAO {
+public class usuarioDAO extends DAO implements usuarioDAOInterface {
     
     public usuarioDAO(){
         
@@ -42,13 +42,51 @@ public class usuarioDAO extends DAO {
         
     }
     
-    public void insertarUsuario(usuario usuario) throws SQLException{
-        String sql = "Insert into usuario values(?,?,?)";
-        PreparedStatement statement = conexion.getConexion().prepareStatement(sql);
-        statement.setInt(1, usuario.getIdUsuario());
-        statement.setString(2, usuario.getNombre());
-        statement.setString(3, usuario.getContraseña());
-        statement.executeUpdate();
-        
-    }
+   public void insertarUsuario(usuario usuario) throws SQLException {
+    String sql = "INSERT INTO usuario (id_usuario, nombre, contraseña) VALUES (?, ?, ?)";
+    PreparedStatement statement = conexion.getConexion().prepareStatement(sql);
+    statement.setInt(1, usuario.getIdUsuario());
+    statement.setString(2, usuario.getNombre());
+    statement.setString(3, usuario.getContraseña());
+    statement.executeUpdate(); 
+}
+   
+  //public usuario verUsuario
+   public usuario verUsuario(Integer id) throws SQLException{
+       String nombre, contraseña;
+       String sql = "select * from usuarios where idUsuario= " +id;
+       Statement statement = conexion.getConexion().createStatement();
+       ResultSet cursor = statement.executeQuery(sql);
+       if(cursor.next()){
+           nombre = cursor.getString("nombre");
+           contraseña = cursor.getString("contraseña");
+           return new usuario(id, nombre, contraseña);
+       }
+       return null;
+   }
+   
+   
+  public void modificarUsuario(usuario u){
+      String sql = "update usuarios set nombre=?, contraseña=? where idUsuario=?";
+      PreparedStatement statement = conexion.getConexion().prepareStatement(sql);
+      
+      statement.setString(1, u.getNombre());
+      statement.setString(2, u.getContraseña());
+      statement.setInt(3, u.getIdUsuario());
+      statement.executeUpdate();
+  }
+   
+  public boolean borrarUsuario(Integer id) throws SQLException{
+      int n;
+      boolean exito=false;
+      String sql ="delete from usuarios where idUsuario=?";
+      PreparedStatement statement = conexion.getConexion().prepareStatement(sql);
+      statement.setInt(1,id);
+      n=statement.executeUpdate();
+      if(n!=0)
+          exito=true;
+      return exito;
+  }
+   
+  
 }

@@ -4,7 +4,11 @@
  */
 package controlador;
 
+import java.sql.SQLException;
+import java.util.List;
+import modelo.usuario;
 import modelo.usuarioDAO;
+import modelo.usuarioDAOInterface;
 import vista.usuarioVista;
 
 /**
@@ -12,16 +16,33 @@ import vista.usuarioVista;
  * @author javiergimenez
  */
 public class controlador {
-    private final usuarioDAO usuarioDAO;
-    private final usuarioVista usuarioVista;
+    private usuarioDAOInterface usuarioDAO;
+    private usuarioVista usuarioVista;
+
+    public controlador(usuarioDAOInterface usuarioDAO, usuarioVista usuarioVista) {
+        this.usuarioDAO = usuarioDAO;
+        this.usuarioVista = usuarioVista;
+    }
     
-    public void listarUsuarios(){
+    public void listarUsuarios() throws SQLException{
+        List<usuario> usuario = usuarioDAO.obtenerUsuario();
+        usuarioVista.mostrarUsuarios(usuario);
+    }
+    
+    public void mostrarUsuarios(){
         try{
-            List<usuario> usuarios = usuarioDAO.obtenerUsuarios();
-        } catch(SQLException e){
-            usuarioVista.mostrarUsuarios("Error al obtenet usuario: " + e.getMessage);
-            
+            List<usuario> usuario = usuarioDAO.obtenerUsuario();
+            usuarioVista.mostrarUsuarios(usuario);
+        } catch (SQLException ex){
+            System.out.println("Error al obtener usuarios " + ex.getMessage());;
         }
     }
     
+    public void modificarUsuario(usuario u){
+        
+    }
+    
+    
 }
+
+
